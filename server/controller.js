@@ -1,11 +1,5 @@
-const isBefore = require('date-fns/isBefore');
-const isWithinInterval = require('date-fns/isWithinInterval');
-const formatISO = require('date-fns/formatISO');
-const parseISO = require('date-fns/parseISO');
-
 const getOddsData = require('../apiHelpers/theOdds');
 const Game = require('../database/models/Game');
-const schedule = require('./schedule');
 const helpers = require('./helpers');
 
 const controller = {
@@ -15,15 +9,14 @@ const controller = {
 
       const { data } = response;
 
-      console.log('data', data);
-
       await Promise.all(data.map(async (gameObj) => {
         const currentGame = new Game(gameObj);
         await currentGame.save();
-        console.log('saved game', currentGame.home_team);
+        // console.log('saved game', currentGame.home_team);
       }));
 
-      res.status(200).send(response.data);
+      // res.status(200).send(response.data);
+      res.status(200).send('data successfully refreshed');
     } catch (err) {
       res.status(400).send(err);
     }
@@ -36,10 +29,13 @@ const controller = {
   },
 
   getCurrentWeek: async (req, res) => {
-    const data = await helpers.sortIntoSlates();
+    // const data = await helpers.sortIntoSlates();
+    const data = await helpers.summarizeGames();
 
     res.status(200).send(data);
-  }
+  },
+
+
 };
 
 module.exports = controller;
