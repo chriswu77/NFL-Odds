@@ -19,6 +19,10 @@ module.exports = {
     'react',
   ],
   rules: {
-    "no-restricted-syntax": 'off'
+    "no-restricted-syntax": 'off',
+    "no-console": 'warn',
+    "no-plusplus": 'off',
+    "no-unused-vars": 'warn',
+    "no-continue": 'off'
   },
 };
