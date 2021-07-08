@@ -8,7 +8,6 @@ const Game = require('../database/models/Game');
 const schedule = require('./schedule');
 
 
-
 const refreshData = async () => {
   try {
     const response = await getOddsData();
@@ -112,9 +111,119 @@ const sortIntoSlates = async () => {
   return sortedGames;
 };
 
+const sortCb = (a, b) => (a - b);
+
+const calcMedian = (sortedArr) => {
+  const midpointIndex = Math.floor((sortedArr.length - 1) / 2);
+
+  if (sortedArr.length % 2 === 0) {
+    return (sortedArr[midpointIndex] + sortedArr[midpointIndex + 1]) / 2
+  }
+
+  return sortedArr[midpointIndex];
+};
+
+const roundDecimal = (num) => Math.round(num * 10) / 10;
+
+const getStats = (arr) => {
+  const sortedArr = arr.sort(sortCb);
+
+  const avg = roundDecimal(sortedArr.reduce((sum, cur) => sum + cur) / sortedArr.length);
+  const min = roundDecimal(sortedArr[0]);
+  const max = roundDecimal(sortedArr[arr.length - 1]);
+  const median = roundDecimal(calcMedian(sortedArr));
+
+  return {
+    avg,
+    min,
+    max,
+    median
+  };
+};
+
+const summarizeGames = async () => {
+  const sortedGames = await sortIntoSlates();
+
+  for (const [slate, gamesArr] of Object.entries(sortedGames)) {
+    if (gamesArr.length === 0) {
+      continue;
+    }
+
+    const flattenedArr = gamesArr.map((gameObj) => {
+      const newGameObj = {
+        id: gameObj.id,
+        commence_time: gameObj.commence_time,
+        home_team: gameObj.home_team,
+        away_team: gameObj.away_team,
+      };
+
+      const homeStats = {
+        moneyLines: [],
+        spreads: [],
+        totals: []
+      };
+
+      const awayStats = {
+        moneyLines: [],
+        spreads: []
+      };
+
+      gameObj.bookmakers.forEach((bookie) => {
+        bookie.markets.forEach((market) => {
+          if (market.key === 'h2h') {
+            market.outcomes.forEach((outcome) => {
+              if (outcome.name === gameObj.home_team) {
+                homeStats.moneyLines.push(outcome.price);
+              } else {
+                awayStats.moneyLines.push(outcome.price);
+              }
+            });
+          } else if (market.key === 'spreads') {
+            market.outcomes.forEach((outcome) => {
+              if (outcome.name === gameObj.home_team) {
+                homeStats.spreads.push(outcome.point);
+              } else {
+                awayStats.spreads.push(outcome.point);
+              }
+            });
+          } else if (market.key === 'totals') {
+            homeStats.totals.push(market.outcomes[0].point);
+          }
+        });
+      });
+
+      const homeMoneyStats = getStats(homeStats.moneyLines);
+      const homeSpreadStats = getStats(homeStats.spreads);
+      const homeTotalStats = getStats(homeStats.totals);
+
+      const awayMoneyStats = getStats(awayStats.moneyLines);
+      const awaySpreadStats = getStats(awayStats.spreads);
+
+      newGameObj.homeStats = {
+        money_line: homeMoneyStats,
+        spread: homeSpreadStats,
+        over_under: homeTotalStats
+      };
+
+      newGameObj.awayStats = {
+        money_line: awayMoneyStats,
+        spread: awaySpreadStats,
+        over_under: homeTotalStats
+      };
+
+      return newGameObj;
+    });
+
+    sortedGames[slate] = flattenedArr;
+  }
+
+  return sortedGames;
+};
+
 module.exports = {
   refreshData,
   findCurrentWeek,
   filterCurrentWeekData,
-  sortIntoSlates
+  sortIntoSlates,
+  summarizeGames
 }
