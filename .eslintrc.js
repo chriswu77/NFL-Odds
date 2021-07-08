@@ -19,5 +19,6 @@ module.exports = {
     'react',
   ],
   rules: {
+    "no-restricted-syntax": 'off'
   },
 };
