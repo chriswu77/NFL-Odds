@@ -1,0 +1,42 @@
+#app {
+  background-color: #EEEEEE;
+}
+
+.main-container {
+  max-width: 1600px;
+  padding: 20px !important;
+}
+
+h2 {
+  font-weight: 400 !important;
+  font-size: 1.75rem !important;
+}
+
+.game-container {
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 10%);
+  border-radius: 4px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+}
+
+.logo.left {
+  margin-left: 15px;
+}
+
+.logo.right {
+  margin-right: 15px;
+}
+
+.at-sign {
+  opacity: .7;
+  margin: 0 30px;
+}
+
+.team-info {
+  display: flex;
+  align-items: center;
+}
