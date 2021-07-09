@@ -3,8 +3,10 @@ const controller = require('./controller');
 
 router.get('/refresh', controller.refresh);
 
-router.get('/getAll', controller.getAll);
+router.get('/all', controller.getAll);
 
-router.get('/getCurrentWeek', controller.getCurrentWeek);
+router.get('/current', controller.getCurrentWeek);
+
+router.get('/summary', controller.getSummary);
 
 module.exports = router;

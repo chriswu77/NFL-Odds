@@ -15,7 +15,6 @@ const controller = {
         // console.log('saved game', currentGame.home_team);
       }));
 
-      // res.status(200).send(response.data);
       res.status(200).send('data successfully refreshed');
     } catch (err) {
       res.status(400).send(err);
@@ -28,14 +27,17 @@ const controller = {
     res.status(200).send(data);
   },
 
-  getCurrentWeek: async (req, res) => {
-    // const data = await helpers.sortIntoSlates();
+  getCurrentWeek: (req, res) => {
+    const currentWeek = helpers.findCurrentWeek();
+
+    res.status(200).json(currentWeek);
+  },
+
+  getSummary: async (req, res) => {
     const data = await helpers.summarizeGames();
 
     res.status(200).send(data);
-  },
-
-
+  }
 };
 
 module.exports = controller;
