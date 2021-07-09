@@ -5,8 +5,10 @@ const helpers = require('./helpers');
 const controller = {
   refresh: async (req, res) => {
     try {
-      const response = await getOddsData();
+      // remove all documents in Game collection first
+      await Game.deleteMany({});
 
+      const response = await getOddsData();
       const { data } = response;
 
       await Promise.all(data.map(async (gameObj) => {
@@ -15,7 +17,12 @@ const controller = {
         // console.log('saved game', currentGame.home_team);
       }));
 
-      res.status(200).send('data successfully refreshed');
+      const requestInfo = {
+        remaining: response.headers['x-requests-remaining'],
+        used: response.headers['x-requests-used']
+      };
+
+      res.status(200).send(requestInfo);
     } catch (err) {
       res.status(400).send(err);
     }
