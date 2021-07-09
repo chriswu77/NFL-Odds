@@ -23,6 +23,7 @@ module.exports = {
     "no-console": 'warn',
     "no-plusplus": 'off',
     "no-unused-vars": 'warn',
-    "no-continue": 'off'
+    "no-continue": 'off',
+    "react/prop-types": 'off'
   },
 };
