@@ -4,6 +4,7 @@ const {
   filterWeekGames,
   sortIntoSlates,
   summarizeGames,
+  sortByDate,
 } = require('./helpers');
 
 const controller = {
@@ -34,10 +35,11 @@ const controller = {
       }
 
       const weekGames = await filterWeekGames(week);
-      const sortedGames = sortIntoSlates(weekGames);
-      const summarizedGames = summarizeGames(sortedGames);
+      const sortedBySlateGames = sortIntoSlates(weekGames);
+      const summarizedGames = summarizeGames(sortedBySlateGames);
+      const sortedByDateGames = sortByDate(summarizedGames);
 
-      res.status(200).send(summarizedGames);
+      res.status(200).send(sortedByDateGames);
     } catch (err) {
       res.status(400).send(err);
     }

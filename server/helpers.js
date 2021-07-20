@@ -225,10 +225,28 @@ const summarizeGames = (sortedGames) => {
   return summarizedGames;
 };
 
+const sortByDate = (summarizedGames) => {
+  const gamesSortedByDate = summarizedGames;
+
+  for (const [slate, gamesArr] of Object.entries(gamesSortedByDate)) {
+    const sortedGamesArr = gamesArr.sort((game1, game2) => {
+      const game1date = parseISO(game1.commence_time.toISOString());
+      const game2date = parseISO(game2.commence_time.toISOString());
+
+      return game1date - game2date;
+    });
+
+    gamesSortedByDate[slate] = sortedGamesArr;
+  }
+
+  return gamesSortedByDate;
+};
+
 module.exports = {
   refreshData,
   findCurrentWeek,
   filterWeekGames,
   sortIntoSlates,
   summarizeGames,
+  sortByDate,
 };
