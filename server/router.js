@@ -5,8 +5,8 @@ router.get('/refresh', controller.refresh);
 
 router.get('/all', controller.getAll);
 
-router.get('/current', controller.getCurrentWeek);
+router.get('/week', controller.getCurrentWeek);
 
-router.get('/summary', controller.getGames);
+router.get('/games/:week?', controller.getGames);
 
 module.exports = router;

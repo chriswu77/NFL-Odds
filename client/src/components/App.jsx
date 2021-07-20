@@ -21,7 +21,7 @@ const App = () => {
 
   const getCurrentWeek = async () => {
     try {
-      const res = await axios.get('/api/current');
+      const res = await axios.get('/api/week');
       setWeek(res.data);
     } catch (err) {
       console.log(err);
@@ -30,7 +30,7 @@ const App = () => {
 
   const getSummaryData = async () => {
     try {
-      const res = await axios.get('/api/summary');
+      const res = await axios.get('/api/games');
       setSlateData(res.data);
     } catch (err) {
       console.log(err);
@@ -79,6 +79,7 @@ const App = () => {
         <Row className="mx-auto mb-5">
           <Col className="pl-0">
             <h1 className="display-6 ">NFL 2021 - WEEK {week} ODDS</h1>
+            <Button variant="primary" onClick={refreshData}>> WEEK 2</Button>
           </Col>
           <Col className="d-flex justify-content-end align-items-center">
             <div className="d-flex flex-column">
