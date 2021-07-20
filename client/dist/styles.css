@@ -39,6 +39,15 @@ h2 {
 .team-info {
   display: flex;
   align-items: center;
+  width: 151px;
+}
+
+.team-info.left {
+  justify-content: flex-end;
+}
+
+.team-info.right {
+  justify-content: flex-start;
 }
 
 .loading-overlay {

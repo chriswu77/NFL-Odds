@@ -45,12 +45,12 @@ const Game = (props) => {
 
   return (
     <Row className="game-container d-flex align-items-center py-3 mx-auto mb-4">
-      <Col className="d-flex flex-column font-weight-bold">
+      <Col xs={1} className="d-flex flex-column font-weight-bold">
         <span>{timeText}</span>
         {slate === 'primetime' && <span>{day === 0 ? 'Sun' : 'Mon'}</span>}
       </Col>
-      <Col className="d-flex align-items-center">
-        <div className="team-info">
+      <Col className="d-flex align-items-center justify-content-center py-4">
+        <div className="team-info left">
           <span>{awayTeam}</span>
           <img
             className="logo left"
@@ -59,7 +59,7 @@ const Game = (props) => {
           />
         </div>
         <FontAwesomeIcon icon={faAt} size="lg" className="at-sign" />
-        <div className="team-info">
+        <div className="team-info right">
           <img
             className="logo right"
             src={logos[game.home_team]}
