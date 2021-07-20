@@ -11,8 +11,12 @@ import Slates from './Slates';
 const App = () => {
   const [week, setWeek] = useState(1);
   const [slateData, setSlateData] = useState();
-  const [requestsRemaining, setRequestsRemaining] = useState(localStorage.getItem('requestsRemaining') || 500);
-  const [requestsUsed, setRequestsUsed] = useState(localStorage.getItem('requestsUsed') || 0);
+  const [requestsRemaining, setRequestsRemaining] = useState(
+    localStorage.getItem('requestsRemaining') || 500
+  );
+  const [requestsUsed, setRequestsUsed] = useState(
+    localStorage.getItem('requestsUsed') || 0
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const getCurrentWeek = async () => {
@@ -60,7 +64,12 @@ const App = () => {
 
   const loadingPage = (
     <div className="loading-overlay">
-      <Spinner className="spinner" animation="border" variant="danger" role="status"/>
+      <Spinner
+        className="spinner"
+        animation="border"
+        variant="danger"
+        role="status"
+      />
     </div>
   );
 
@@ -73,7 +82,9 @@ const App = () => {
           </Col>
           <Col className="d-flex justify-content-end align-items-center">
             <div className="d-flex flex-column">
-              <Button variant="primary" onClick={refreshData}>Refresh</Button>
+              <Button variant="primary" onClick={refreshData}>
+                Refresh
+              </Button>
               <span>Requests remaining: {requestsRemaining}</span>
               <span>Requests used: {requestsUsed}</span>
             </div>

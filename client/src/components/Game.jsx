@@ -33,7 +33,9 @@ const Game = (props) => {
     displayMinutes = minutes;
   }
 
-  const timeText = `${displayHour}:${displayMinutes} ${hour < 12 ? 'AM' : 'PM'}`;
+  const timeText = `${displayHour}:${displayMinutes} ${
+    hour < 12 ? 'AM' : 'PM'
+  }`;
 
   let awayTeam = game.away_team.split(' ');
   awayTeam = awayTeam[awayTeam.length - 1];
@@ -45,18 +47,24 @@ const Game = (props) => {
     <Row className="game-container d-flex align-items-center py-3 mx-auto mb-4">
       <Col className="d-flex flex-column font-weight-bold">
         <span>{timeText}</span>
-        {slate === 'primetime' && (
-          <span>{day === 0 ? 'Sun' : 'Mon'}</span>
-        )}
+        {slate === 'primetime' && <span>{day === 0 ? 'Sun' : 'Mon'}</span>}
       </Col>
       <Col className="d-flex align-items-center">
         <div className="team-info">
           <span>{awayTeam}</span>
-          <img className="logo left" src={logos[game.away_team]} alt={game.away_team} />
+          <img
+            className="logo left"
+            src={logos[game.away_team]}
+            alt={game.away_team}
+          />
         </div>
         <FontAwesomeIcon icon={faAt} size="lg" className="at-sign" />
         <div className="team-info">
-          <img className="logo right" src={logos[game.home_team]} alt={game.home_team}/>
+          <img
+            className="logo right"
+            src={logos[game.home_team]}
+            alt={game.home_team}
+          />
           <span>{homeTeam}</span>
         </div>
       </Col>

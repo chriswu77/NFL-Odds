@@ -8,18 +8,21 @@ const oddsFormat = 'american';
 
 const getOddsData = async () => {
   try {
-    const response = await axios.get(`https://api.the-odds-api.com/v4/sports/${sportKey}/odds`, {
-      params: {
-        apiKey,
-        regions,
-        markets,
-        oddsFormat
+    const response = await axios.get(
+      `https://api.the-odds-api.com/v4/sports/${sportKey}/odds`,
+      {
+        params: {
+          apiKey,
+          regions,
+          markets,
+          oddsFormat,
+        },
       }
-    });
+    );
 
-    console.log('Remaining requests',response.headers['x-requests-remaining']);
+    console.log('Remaining requests', response.headers['x-requests-remaining']);
 
-    console.log('Used requests',response.headers['x-requests-used']);
+    console.log('Used requests', response.headers['x-requests-used']);
 
     return response;
   } catch (err) {

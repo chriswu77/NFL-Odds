@@ -6,19 +6,25 @@ const gameSchema = new mongoose.Schema({
   commence_time: Date,
   home_team: String,
   away_team: String,
-  bookmakers: [{
-    key: String,
-    title: String,
-    last_update: Date,
-    markets: [{
+  bookmakers: [
+    {
       key: String,
-      outcomes: [{
-        name: String,
-        price: Number,
-        point: Number
-      }]
-    }]
-  }]
+      title: String,
+      last_update: Date,
+      markets: [
+        {
+          key: String,
+          outcomes: [
+            {
+              name: String,
+              price: Number,
+              point: Number,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
 
 const Game = mongoose.model('Game', gameSchema);

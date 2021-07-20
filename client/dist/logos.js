@@ -30,7 +30,7 @@ const logos = {
   'Seattle Seahawks': './logos/seattle-seahawks-logo-transparent.png',
   'Tampa Bay Buccaneers': './logos/tampa-bay-buccaneers-logo-transparent.png',
   'Tennessee Titans': './logos/tennessee-titans-logo-transparent.png',
-  'Washington Football Team': './logos/washington_football_team-2020-logo.png'
-}
+  'Washington Football Team': './logos/washington_football_team-2020-logo.png',
+};
 
 module.exports = logos;

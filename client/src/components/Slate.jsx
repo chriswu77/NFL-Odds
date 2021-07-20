@@ -14,7 +14,7 @@ const Slate = (props) => {
     3: 'Wednesday',
     4: 'Thursday',
     5: 'Friday',
-    6: 'Saturday'
+    6: 'Saturday',
   };
 
   const monthMap = {
@@ -29,8 +29,8 @@ const Slate = (props) => {
     8: 'September',
     9: 'October',
     10: 'November',
-    11: 'December'
-  }
+    11: 'December',
+  };
 
   const gameDate = parseISO(games[0].commence_time);
   const calendarDay = gameDate.getDate();
@@ -53,9 +53,9 @@ const Slate = (props) => {
     const month2 = game2Date.getMonth();
 
     if (gameDate < game2Date) {
-      slateText = `Primetime - ${monthMap[month]} ${calendarDay} to ${monthMap[month2]} ${calendarDay2}`
+      slateText = `Primetime - ${monthMap[month]} ${calendarDay} to ${monthMap[month2]} ${calendarDay2}`;
     } else {
-      slateText = `Primetime - ${monthMap[month2]} ${calendarDay2} to ${monthMap[month]} ${calendarDay}`
+      slateText = `Primetime - ${monthMap[month2]} ${calendarDay2} to ${monthMap[month]} ${calendarDay}`;
     }
   }
 
@@ -67,7 +67,9 @@ const Slate = (props) => {
             <h2>{slateText}</h2>
           </Col>
         </Row>
-        {games.map((game) => <Game game={game} slate={name} key={game.id} />)}
+        {games.map((game) => (
+          <Game game={game} slate={name} key={game.id} />
+        ))}
       </Col>
     </Row>
   );

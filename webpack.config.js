@@ -4,7 +4,7 @@ module.exports = {
   entry: path.join(__dirname, '/client/src/index.jsx'),
   output: {
     path: path.join(__dirname, '/client/dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   mode: 'development',
   module: {
@@ -15,7 +15,7 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react'],
-          plugins: ['@babel/transform-runtime']
+          plugins: ['@babel/transform-runtime'],
         },
       },
       {

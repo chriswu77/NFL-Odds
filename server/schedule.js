@@ -9,8 +9,8 @@ for (let i = 0; i < 18; i++) {
 
   weeks[weekNum] = {
     start: lastWeek,
-    end: addWeeks(lastWeek, 1)
-  }
+    end: addWeeks(lastWeek, 1),
+  };
 
   lastWeek = addWeeks(lastWeek, 1);
 }
