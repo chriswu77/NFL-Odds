@@ -183,6 +183,19 @@ const summarizeGames = (sortedGames) => {
                 awayStats.moneyLines.push(outcome.price);
               }
             });
+          } else if (market.key === 'h2h_lay') {
+            market.outcomes.forEach((outcome) => {
+              if (outcome.name === gameObj.home_team && outcome.price < 50000) {
+                homeStats.moneyLines.pop();
+                homeStats.moneyLines.push(outcome.price);
+              } else if (
+                outcome.name === gameObj.away_team &&
+                outcome.price < 50000
+              ) {
+                awayStats.moneyLines.pop();
+                awayStats.moneyLines.push(outcome.price);
+              }
+            });
           } else if (market.key === 'spreads') {
             market.outcomes.forEach((outcome) => {
               if (outcome.name === gameObj.home_team) {
