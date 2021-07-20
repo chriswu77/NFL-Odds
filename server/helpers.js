@@ -7,21 +7,26 @@ const getOddsData = require('../apiHelpers/theOdds');
 const Game = require('../database/models/Game');
 const schedule = require('./schedule');
 
-
 const refreshData = async () => {
-  try {
-    const response = await getOddsData();
+  // remove all documents in Game collection first
+  await Game.deleteMany({});
 
-    const { data } = response;
+  const response = await getOddsData();
+  const { data } = response;
 
-    await Promise.all(data.map(async (gameObj) => {
+  await Promise.all(
+    data.map(async (gameObj) => {
       const currentGame = new Game(gameObj);
       await currentGame.save();
-      // console.log('saved game', currentGame.id);
-    }));
-  } catch (err) {
-    console.log(err);
-  }
+    })
+  );
+
+  const requestInfo = {
+    remaining: response.headers['x-requests-remaining'],
+    used: response.headers['x-requests-used'],
+  };
+
+  return requestInfo;
 };
 
 const findCurrentWeek = () => {
@@ -36,7 +41,7 @@ const findCurrentWeek = () => {
     for (const [key, value] of Object.entries(schedule)) {
       const inRange = isWithinInterval(currentDate, {
         start: value.start,
-        end: value.end
+        end: value.end,
       });
 
       if (inRange) {
@@ -49,32 +54,28 @@ const findCurrentWeek = () => {
   return currentWeek;
 };
 
-const filterCurrentWeekData = async () => {
-  const currentWeek = findCurrentWeek();
-
+const filterWeekGames = async (week) => {
   const filteredData = await Game.find({
     commence_time: {
-      $gte: formatISO(schedule[currentWeek].start),
-      $lte: formatISO(schedule[currentWeek].end)
-    }
+      $gte: formatISO(schedule[week].start),
+      $lte: formatISO(schedule[week].end),
+    },
   });
 
   return filteredData;
 };
 
-const sortIntoSlates = async () => {
+const sortIntoSlates = (weekGames) => {
   const sortedGames = {
     tnf: [],
     sat: [],
     morning: [],
     afternoon: [],
     evening: [],
-    pt: []
+    pt: [],
   };
 
-  const data = await filterCurrentWeekData();
-
-  data.forEach((gameObj) => {
+  weekGames.forEach((gameObj) => {
     const localDate = parseISO(gameObj.commence_time.toISOString());
     const dayIndex = localDate.getDay();
     // [Sunday, Monday, Tuesday, Wed, Thurs, Fri, Sat]
@@ -86,7 +87,9 @@ const sortIntoSlates = async () => {
     } else if (dayIndex === 1) {
       sortedGames.pt.push(gameObj);
     } else {
-      const utcHour = Number(gameObj.commence_time.toISOString().split('T')[1].slice(0, 2));
+      const utcHour = Number(
+        gameObj.commence_time.toISOString().split('T')[1].slice(0, 2)
+      );
 
       if (utcHour >= 0 && utcHour <= 4) {
         // Primetime slate
@@ -111,13 +114,13 @@ const sortIntoSlates = async () => {
   return sortedGames;
 };
 
-const sortCb = (a, b) => (a - b);
+const sortCb = (a, b) => a - b;
 
 const calcMedian = (sortedArr) => {
   const midpointIndex = Math.floor((sortedArr.length - 1) / 2);
 
   if (sortedArr.length % 2 === 0) {
-    return (sortedArr[midpointIndex] + sortedArr[midpointIndex + 1]) / 2
+    return (sortedArr[midpointIndex] + sortedArr[midpointIndex + 1]) / 2;
   }
 
   return sortedArr[midpointIndex];
@@ -128,7 +131,9 @@ const roundDecimal = (num) => Math.round(num * 10) / 10;
 const getStats = (arr) => {
   const sortedArr = arr.sort(sortCb);
 
-  const avg = roundDecimal(sortedArr.reduce((sum, cur) => sum + cur) / sortedArr.length);
+  const avg = roundDecimal(
+    sortedArr.reduce((sum, cur) => sum + cur) / sortedArr.length
+  );
   const min = roundDecimal(sortedArr[0]);
   const max = roundDecimal(sortedArr[arr.length - 1]);
   const median = roundDecimal(calcMedian(sortedArr));
@@ -137,12 +142,12 @@ const getStats = (arr) => {
     avg,
     min,
     max,
-    median
+    median,
   };
 };
 
-const summarizeGames = async () => {
-  const sortedGames = await sortIntoSlates();
+const summarizeGames = (sortedGames) => {
+  const summarizedGames = sortedGames;
 
   for (const [slate, gamesArr] of Object.entries(sortedGames)) {
     if (gamesArr.length === 0) {
@@ -160,12 +165,12 @@ const summarizeGames = async () => {
       const homeStats = {
         moneyLines: [],
         spreads: [],
-        totals: []
+        totals: [],
       };
 
       const awayStats = {
         moneyLines: [],
-        spreads: []
+        spreads: [],
       };
 
       gameObj.bookmakers.forEach((bookie) => {
@@ -202,28 +207,28 @@ const summarizeGames = async () => {
       newGameObj.homeStats = {
         money_line: homeMoneyStats,
         spread: homeSpreadStats,
-        over_under: homeTotalStats
+        over_under: homeTotalStats,
       };
 
       newGameObj.awayStats = {
         money_line: awayMoneyStats,
         spread: awaySpreadStats,
-        over_under: homeTotalStats
+        over_under: homeTotalStats,
       };
 
       return newGameObj;
     });
 
-    sortedGames[slate] = flattenedArr;
+    summarizedGames[slate] = flattenedArr;
   }
 
-  return sortedGames;
+  return summarizedGames;
 };
 
 module.exports = {
   refreshData,
   findCurrentWeek,
-  filterCurrentWeekData,
+  filterWeekGames,
   sortIntoSlates,
-  summarizeGames
-}
+  summarizeGames,
+};
