@@ -1,50 +1,47 @@
-const getOddsData = require('../apiHelpers/theOdds');
-const Game = require('../database/models/Game');
-const helpers = require('./helpers');
+const {
+  refreshData,
+  findCurrentWeek,
+  filterWeekGames,
+  sortIntoSlates,
+  summarizeGames,
+} = require('./helpers');
 
 const controller = {
   refresh: async (req, res) => {
     try {
-      // remove all documents in Game collection first
-      await Game.deleteMany({});
-
-      const response = await getOddsData();
-      const { data } = response;
-
-      await Promise.all(data.map(async (gameObj) => {
-        const currentGame = new Game(gameObj);
-        await currentGame.save();
-        // console.log('saved game', currentGame.home_team);
-      }));
-
-      const requestInfo = {
-        remaining: response.headers['x-requests-remaining'],
-        used: response.headers['x-requests-used']
-      };
-
-      res.status(200).send(requestInfo);
+      const resData = await refreshData();
+      res.status(200).send(resData);
     } catch (err) {
       res.status(400).send(err);
     }
   },
 
-  getAll: async (req, res) => {
-    const data = await Game.find({});
-
-    res.status(200).send(data);
-  },
-
   getCurrentWeek: (req, res) => {
-    const currentWeek = helpers.findCurrentWeek();
-
-    res.status(200).json(currentWeek);
+    try {
+      const currentWeek = findCurrentWeek();
+      res.status(200).json(currentWeek);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
 
-  getSummary: async (req, res) => {
-    const data = await helpers.summarizeGames();
+  getGames: async (req, res) => {
+    try {
+      let { week } = req.params;
 
-    res.status(200).send(data);
-  }
+      if (!week) {
+        week = findCurrentWeek();
+      }
+
+      const weekGames = await filterWeekGames(week);
+      const sortedGames = sortIntoSlates(weekGames);
+      const summarizedGames = summarizeGames(sortedGames);
+
+      res.status(200).send(summarizedGames);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  },
 };
 
 module.exports = controller;
