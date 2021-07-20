@@ -6,6 +6,7 @@ const {
   summarizeGames,
   sortByDate,
 } = require('./helpers');
+const Game = require('../database/models/Game');
 
 const controller = {
   refresh: async (req, res) => {
@@ -15,6 +16,12 @@ const controller = {
     } catch (err) {
       res.status(400).send(err);
     }
+  },
+
+  getAll: async (req, res) => {
+    const data = await Game.find({});
+
+    res.status(200).send(data);
   },
 
   getCurrentWeek: (req, res) => {
