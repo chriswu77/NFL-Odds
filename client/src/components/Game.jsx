@@ -38,10 +38,18 @@ const Game = (props) => {
   }`;
 
   let awayTeam = game.away_team.split(' ');
-  awayTeam = awayTeam[awayTeam.length - 1];
+  if (game.away_team === 'Washington Football Team') {
+    awayTeam = awayTeam[0];
+  } else {
+    awayTeam = awayTeam[awayTeam.length - 1];
+  }
 
   let homeTeam = game.home_team.split(' ');
-  homeTeam = homeTeam[homeTeam.length - 1];
+  if (game.home_team === 'Washington Football Team') {
+    homeTeam = homeTeam[0];
+  } else {
+    homeTeam = homeTeam[homeTeam.length - 1];
+  }
 
   return (
     <Row className="game-container d-flex align-items-center py-3 mx-auto mb-4">
