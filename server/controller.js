@@ -4,7 +4,6 @@ const {
   filterWeekGames,
   sortIntoSlates,
   summarizeGames,
-  sortByDate,
 } = require('./helpers');
 const Game = require('../database/models/Game');
 
@@ -43,9 +42,8 @@ const controller = {
       const weekGames = await filterWeekGames(week);
       const sortedBySlateGames = sortIntoSlates(weekGames);
       const summarizedGames = summarizeGames(sortedBySlateGames);
-      const sortedByDateGames = sortByDate(summarizedGames);
 
-      res.status(200).send(sortedByDateGames);
+      res.status(200).send(summarizedGames);
     } catch (err) {
       res.status(400).send(err);
     }

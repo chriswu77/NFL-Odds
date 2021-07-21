@@ -229,7 +229,13 @@ const App = () => {
           </Col>
         </Row>
         <Row>
-          {slateData && <Slates slateData={slateData} sortGames={sortGames} sortBy={sortBy}/>}
+          {slateData && (
+            <Slates
+              slateData={slateData}
+              sortGames={sortGames}
+              sortBy={sortBy}
+            />
+          )}
         </Row>
       </Container>
       {isLoading && loadingPage}
