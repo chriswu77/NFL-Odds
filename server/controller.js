@@ -20,7 +20,6 @@ const controller = {
 
   getAll: async (req, res) => {
     const data = await Game.find({});
-
     res.status(200).send(data);
   },
 
