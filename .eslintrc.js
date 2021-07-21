@@ -21,5 +21,6 @@ module.exports = {
     'no-continue': 'off',
     'react/prop-types': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
+    'prefer-destructuring': 'warn',
   },
 };
