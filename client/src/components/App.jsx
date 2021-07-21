@@ -11,7 +11,9 @@ import {
   faLongArrowAltRight,
   faLongArrowAltLeft,
 } from '@fortawesome/free-solid-svg-icons';
+import parseISO from 'date-fns/parseISO';
 import Slates from './Slates';
+import SortButton from './SortButton';
 
 const App = () => {
   const [week, setWeek] = useState(1);
@@ -24,6 +26,7 @@ const App = () => {
     localStorage.getItem('requestsUsed') || 0
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState('date');
 
   const getCurrentWeek = async () => {
     try {
@@ -100,6 +103,84 @@ const App = () => {
     }
   }, [isNextWeek]);
 
+  const sortGames = () => {
+    const dataCopy = { ...slateData };
+
+    if (sortBy === 'over_under') {
+      for (const [slate, gamesArr] of Object.entries(dataCopy)) {
+        const sortedArr = gamesArr.sort((game1, game2) => {
+          const a = game1.homeStats.over_under;
+          const b = game2.homeStats.over_under;
+
+          return (
+            (a === null) - (b === null) || -(a.avg > b.avg) || +(a.avg < b.avg)
+          );
+        });
+
+        dataCopy[slate] = sortedArr;
+      }
+    } else if (sortBy === 'spread') {
+      for (const [slate, gamesArr] of Object.entries(dataCopy)) {
+        const sortedArr = gamesArr.sort((game1, game2) => {
+          let game1spread;
+          let game2spread;
+
+          if (game1.homeStats.spread.avg > 0) {
+            game1spread = game1.homeStats.spread.avg;
+          } else {
+            game1spread = game1.awayStats.spread.avg;
+          }
+
+          if (game2.homeStats.spread.avg > 0) {
+            game2spread = game2.homeStats.spread.avg;
+          } else {
+            game2spread = game2.awayStats.spread.avg;
+          }
+
+          return game2spread - game1spread;
+        });
+
+        dataCopy[slate] = sortedArr;
+      }
+    } else if (sortBy === 'moneyline') {
+      for (const [slate, gamesArr] of Object.entries(dataCopy)) {
+        const sortedArr = gamesArr.sort((game1, game2) => {
+          let game1moneyline;
+          let game2moneyline;
+
+          if (game1.homeStats.money_line.avg < 0) {
+            game1moneyline = game1.homeStats.money_line.avg;
+          } else {
+            game1moneyline = game1.awayStats.money_line.avg;
+          }
+
+          if (game2.homeStats.money_line.avg < 0) {
+            game2moneyline = game2.homeStats.money_line.avg;
+          } else {
+            game2moneyline = game2.awayStats.money_line.avg;
+          }
+
+          return game1moneyline - game2moneyline;
+        });
+
+        dataCopy[slate] = sortedArr;
+      }
+    } else {
+      for (const [slate, gamesArr] of Object.entries(dataCopy)) {
+        const sortedArr = gamesArr.sort((game1, game2) => {
+          const game1date = parseISO(game1.commence_time);
+          const game2date = parseISO(game2.commence_time);
+
+          return game1date - game2date;
+        });
+
+        dataCopy[slate] = sortedArr;
+      }
+    }
+
+    setSlateData(dataCopy);
+  };
+
   return (
     <>
       <Container fluid className="main-container">
@@ -137,7 +218,18 @@ const App = () => {
           </Col>
         </Row>
         <Row>
-          <Slates slateData={slateData} />
+          <Col>
+            {slateData && (
+              <SortButton
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                sortGames={sortGames}
+              />
+            )}
+          </Col>
+        </Row>
+        <Row>
+          {slateData && <Slates slateData={slateData} sortGames={sortGames} />}
         </Row>
       </Container>
       {isLoading && loadingPage}
