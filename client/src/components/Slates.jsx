@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Col from 'react-bootstrap/Col';
 import Slate from './Slate';
 
 const Slates = (props) => {
-  const { slateData, sortGames } = props;
+  const { slateData, sortGames, sortBy } = props;
 
   const [thurs, setThurs] = useState([]);
   const [sat, setSat] = useState([]);
@@ -21,8 +21,15 @@ const Slates = (props) => {
     setPrimeTime(slateData.pt);
   }, [slateData]);
 
+  const prevSortByRef = useRef();
   useEffect(() => {
-    sortGames();
+    prevSortByRef.current = sortBy;
+  });
+
+  useEffect(() => {
+    if (sortBy === prevSortByRef.current) {
+      sortGames();
+    }
   }, [thurs, sat, sunMorning, sunAfternoon, sunEvening, primetime]);
 
   return (
