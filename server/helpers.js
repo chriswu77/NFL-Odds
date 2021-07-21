@@ -129,6 +129,10 @@ const calcMedian = (sortedArr) => {
 const roundDecimal = (num) => Math.round(num * 10) / 10;
 
 const getStats = (arr) => {
+  if (arr.length === 0) {
+    return null;
+  }
+
   const sortedArr = arr.sort(sortCb);
 
   const avg = roundDecimal(
