@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Slate from './Slate';
 
 const Slates = (props) => {
-  const { slateData } = props;
+  const { slateData, sortGames } = props;
 
   const [thurs, setThurs] = useState([]);
   const [sat, setSat] = useState([]);
@@ -14,15 +13,17 @@ const Slates = (props) => {
   const [primetime, setPrimeTime] = useState([]);
 
   useEffect(() => {
-    if (slateData) {
-      setThurs(slateData.tnf);
-      setSat(slateData.sat);
-      setSunMorning(slateData.morning);
-      setSunAfternoon(slateData.afternoon);
-      setSunEvening(slateData.evening);
-      setPrimeTime(slateData.pt);
-    }
+    setThurs(slateData.tnf);
+    setSat(slateData.sat);
+    setSunMorning(slateData.morning);
+    setSunAfternoon(slateData.afternoon);
+    setSunEvening(slateData.evening);
+    setPrimeTime(slateData.pt);
   }, [slateData]);
+
+  useEffect(() => {
+    sortGames();
+  }, [thurs, sat, sunMorning, sunAfternoon, sunEvening, primetime]);
 
   return (
     <Col>
