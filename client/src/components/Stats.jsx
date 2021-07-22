@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import StatsRows from './StatsRows';
@@ -9,7 +8,7 @@ const Stats = (props) => {
 
   return (
     <Col>
-      <Table striped bordered hover size="sm" className="mb-0">
+      <Table bordered hover size="sm" className="mb-0">
         <thead>
           <tr>
             <th />
