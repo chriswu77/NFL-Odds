@@ -15,12 +15,36 @@ const SortButton = (props) => {
     sortGames();
   }, [sortBy]);
 
+  let dropdownText;
+  if (sortBy === 'date') {
+    dropdownText = 'Date';
+  } else if (sortBy === 'over_under') {
+    dropdownText = 'Over/Under';
+  } else if (sortBy === 'spread') {
+    dropdownText = 'Spread';
+  } else {
+    dropdownText = 'Moneyline';
+  }
+
   return (
-    <DropdownButton id="sort-btn" title="Sort by" onSelect={onSelect}>
-      <Dropdown.Item eventKey="over_under">Over/Under</Dropdown.Item>
-      <Dropdown.Item eventKey="spread">Spread</Dropdown.Item>
-      <Dropdown.Item eventKey="moneyline">Moneyline</Dropdown.Item>
-      <Dropdown.Item eventKey="date">Date</Dropdown.Item>
+    <DropdownButton
+      id="sort-btn"
+      title={`Sort by: ${dropdownText}`}
+      variant="outline-primary"
+      onSelect={onSelect}
+    >
+      <Dropdown.Item eventKey="over_under" active={sortBy === 'over_under'}>
+        Over/Under
+      </Dropdown.Item>
+      <Dropdown.Item eventKey="spread" active={sortBy === 'spread'}>
+        Spread
+      </Dropdown.Item>
+      <Dropdown.Item eventKey="moneyline" active={sortBy === 'moneyline'}>
+        Moneyline
+      </Dropdown.Item>
+      <Dropdown.Item eventKey="date" active={sortBy === 'date'}>
+        Date
+      </Dropdown.Item>
     </DropdownButton>
   );
 };
