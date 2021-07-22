@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Slate from './Slate';
 
 const Slates = (props) => {
-  const { slateData, sortGames, sortBy } = props;
+  const { slateData, sortGames, sortBy, setIsLoading } = props;
 
   const [thurs, setThurs] = useState([]);
   const [sat, setSat] = useState([]);
@@ -30,6 +30,7 @@ const Slates = (props) => {
     if (sortBy === prevSortByRef.current) {
       sortGames();
     }
+    setIsLoading(false);
   }, [thurs, sat, sunMorning, sunAfternoon, sunEvening, primetime]);
 
   return (

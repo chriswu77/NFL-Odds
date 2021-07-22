@@ -85,6 +85,7 @@ const App = () => {
   );
 
   const toggleWeek = () => {
+    setIsLoading(true);
     setIsNextWeek(!isNextWeek);
   };
 
@@ -234,6 +235,7 @@ const App = () => {
               slateData={slateData}
               sortGames={sortGames}
               sortBy={sortBy}
+              setIsLoading={setIsLoading}
             />
           )}
         </Row>
