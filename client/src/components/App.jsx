@@ -183,7 +183,7 @@ const App = () => {
             />
           </Col>
         </Row>
-        <Row>
+        <Row className="mb-3">
           <Col className="d-flex justify-content-between">
             <WeekButton
               toggleWeek={toggleWeek}
