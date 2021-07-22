@@ -226,6 +226,7 @@ const App = () => {
                 sortBy={sortBy}
                 setSortBy={setSortBy}
                 sortGames={sortGames}
+                setIsLoading={setIsLoading}
               />
             )}
           </Col>

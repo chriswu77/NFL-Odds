@@ -3,16 +3,18 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 const SortButton = (props) => {
-  const { sortBy, setSortBy, sortGames } = props;
+  const { sortBy, setSortBy, sortGames, setIsLoading } = props;
 
   const onSelect = (eventKey) => {
     if (sortBy !== eventKey) {
+      setIsLoading(true);
       setSortBy(eventKey);
     }
   };
 
   useEffect(() => {
     sortGames();
+    setIsLoading(false);
   }, [sortBy]);
 
   let dropdownText;
