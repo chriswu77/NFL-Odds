@@ -38,6 +38,7 @@ const App = () => {
   };
 
   useEffect(async () => {
+    setIsLoading(true);
     await getCurrentWeek();
   }, []);
 
@@ -235,6 +236,7 @@ const App = () => {
               slateData={slateData}
               sortGames={sortGames}
               sortBy={sortBy}
+              isLoading={isLoading}
               setIsLoading={setIsLoading}
             />
           )}
