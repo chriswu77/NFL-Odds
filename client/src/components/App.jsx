@@ -207,7 +207,7 @@ const App = () => {
               </div>
             </Button>
           </Col>
-          <Col className="d-flex justify-content-end align-items-center">
+          <Col className="d-flex justify-content-end p-0">
             <div className="d-flex flex-column">
               <Button variant="secondary" onClick={refreshData}>
                 Refresh

@@ -71,3 +71,12 @@ h2 {
 td, th {
   min-width: 67.5px;
 }
+
+.dropdown {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#sort-btn {
+  width: 185px;
+}
