@@ -4,16 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faLongArrowAltRight,
-  faLongArrowAltLeft,
-} from '@fortawesome/free-solid-svg-icons';
 import parseISO from 'date-fns/parseISO';
 import Slates from './Slates';
+import RefreshButton from './RefreshButton';
+import WeekButton from './WeekButton';
 import SortButton from './SortButton';
+import LoadingPage from './LoadingPage';
 
 const App = () => {
   const [week, setWeek] = useState(1);
@@ -73,17 +69,6 @@ const App = () => {
       console.log(err);
     }
   };
-
-  const loadingPage = (
-    <div className="loading-overlay">
-      <Spinner
-        className="spinner"
-        animation="border"
-        variant="danger"
-        role="status"
-      />
-    </div>
-  );
 
   const toggleWeek = () => {
     setIsLoading(true);
@@ -189,38 +174,22 @@ const App = () => {
         <Row className="mx-auto mb-5">
           <Col className="pl-0">
             <h1 className="display-6 ">NFL 2021 - WEEK {week} ODDS</h1>
-            <Button variant="primary" onClick={toggleWeek} className="mt-3">
-              <div className="d-flex align-items-center">
-                {isNextWeek && (
-                  <FontAwesomeIcon
-                    icon={faLongArrowAltLeft}
-                    size="lg"
-                    className="mr-2"
-                  />
-                )}
-                <span>WEEK {isNextWeek ? week - 1 : week + 1}</span>
-                {!isNextWeek && (
-                  <FontAwesomeIcon
-                    icon={faLongArrowAltRight}
-                    size="lg"
-                    className="ml-2"
-                  />
-                )}
-              </div>
-            </Button>
           </Col>
           <Col className="d-flex justify-content-end p-0">
-            <div className="d-flex flex-column">
-              <Button variant="secondary" onClick={refreshData}>
-                Refresh
-              </Button>
-              <span>Requests remaining: {requestsRemaining}</span>
-              <span>Requests used: {requestsUsed}</span>
-            </div>
+            <RefreshButton
+              refreshData={refreshData}
+              requestsRemaining={requestsRemaining}
+              requestsUsed={requestsUsed}
+            />
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col className="d-flex justify-content-between">
+            <WeekButton
+              toggleWeek={toggleWeek}
+              isNextWeek={isNextWeek}
+              week={week}
+            />
             {slateData && (
               <SortButton
                 sortBy={sortBy}
@@ -243,7 +212,7 @@ const App = () => {
           )}
         </Row>
       </Container>
-      {isLoading && loadingPage}
+      {isLoading && <LoadingPage />}
     </>
   );
 };
