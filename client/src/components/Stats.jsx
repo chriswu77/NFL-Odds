@@ -14,10 +14,10 @@ const Stats = (props) => {
           <tr>
             <th />
             <th colSpan="4" className="text-center">
-              {homeTeam}
+              {awayTeam}
             </th>
             <th colSpan="4" className="text-center">
-              {awayTeam}
+              {homeTeam}
             </th>
           </tr>
           <tr>

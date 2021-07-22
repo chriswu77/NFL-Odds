@@ -17,6 +17,18 @@ const StatsRows = (props) => {
     <tr>
       <td>{name}</td>
       <td className="text-center">
+        {game.awayStats[type] ? game.awayStats[type].avg : 'N/A'}
+      </td>
+      <td className="text-center">
+        {game.awayStats[type] ? game.awayStats[type].median : 'N/A'}
+      </td>
+      <td className="text-center">
+        {game.awayStats[type] ? game.awayStats[type].min : 'N/A'}
+      </td>
+      <td className="text-center">
+        {game.awayStats[type] ? game.awayStats[type].max : 'N/A'}
+      </td>
+      <td className="text-center">
         {game.homeStats[type] ? game.homeStats[type].avg : 'N/A'}
       </td>
       <td className="text-center">
@@ -27,18 +39,6 @@ const StatsRows = (props) => {
       </td>
       <td className="text-center">
         {game.homeStats[type] ? game.homeStats[type].max : 'N/A'}
-      </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.awayStats[type].avg : 'N/A'}
-      </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.awayStats[type].median : 'N/A'}
-      </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.awayStats[type].min : 'N/A'}
-      </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.awayStats[type].max : 'N/A'}
       </td>
     </tr>
   );
