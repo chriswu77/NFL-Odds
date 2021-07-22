@@ -79,3 +79,8 @@ td, th {
 #sort-btn {
   width: 185px;
 }
+
+.cell {
+  background-color: rgba(250, 206, 151, 0.38);
+  color: rgb(215, 103, 6);
+}
