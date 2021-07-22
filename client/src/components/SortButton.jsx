@@ -14,7 +14,9 @@ const SortButton = (props) => {
 
   useEffect(() => {
     sortGames();
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
   }, [sortBy]);
 
   let dropdownText;
