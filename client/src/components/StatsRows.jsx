@@ -13,32 +13,46 @@ const StatsRows = (props) => {
     type = 'money_line';
   }
 
+  const handleNulls = (obj, statType) => {
+    if (!obj) {
+      return 'N/A';
+    }
+    return obj[statType];
+  };
+
+  const cellStyle = (obj, statType) => {
+    if (!obj || obj[statType] > 0) {
+      return '';
+    }
+    return ' cell';
+  };
+
   return (
     <tr>
       <td>{name}</td>
-      <td className="text-center">
-        {game.awayStats[type] ? game.awayStats[type].avg : 'N/A'}
+      <td className={`text-center${cellStyle(game.awayStats[type], 'avg')}`}>
+        {handleNulls(game.awayStats[type], 'avg')}
       </td>
-      <td className="text-center">
-        {game.awayStats[type] ? game.awayStats[type].median : 'N/A'}
+      <td className={`text-center${cellStyle(game.awayStats[type], 'median')}`}>
+        {handleNulls(game.awayStats[type], 'median')}
       </td>
-      <td className="text-center">
-        {game.awayStats[type] ? game.awayStats[type].min : 'N/A'}
+      <td className={`text-center${cellStyle(game.awayStats[type], 'min')}`}>
+        {handleNulls(game.awayStats[type], 'min')}
       </td>
-      <td className="text-center">
-        {game.awayStats[type] ? game.awayStats[type].max : 'N/A'}
+      <td className={`text-center${cellStyle(game.awayStats[type], 'max')}`}>
+        {handleNulls(game.awayStats[type], 'max')}
       </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.homeStats[type].avg : 'N/A'}
+      <td className={`text-center${cellStyle(game.homeStats[type], 'avg')}`}>
+        {handleNulls(game.homeStats[type], 'avg')}
       </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.homeStats[type].median : 'N/A'}
+      <td className={`text-center${cellStyle(game.homeStats[type], 'median')}`}>
+        {handleNulls(game.homeStats[type], 'median')}
       </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.homeStats[type].min : 'N/A'}
+      <td className={`text-center${cellStyle(game.homeStats[type], 'min')}`}>
+        {handleNulls(game.homeStats[type], 'min')}
       </td>
-      <td className="text-center">
-        {game.homeStats[type] ? game.homeStats[type].max : 'N/A'}
+      <td className={`text-center${cellStyle(game.homeStats[type], 'max')}`}>
+        {handleNulls(game.homeStats[type], 'max')}
       </td>
     </tr>
   );
