@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import parseISO from 'date-fns/parseISO';
+import { motion } from 'framer-motion';
 import Game from './Game';
 
 const Slate = (props) => {
-  const { name, games } = props;
+  const { name, games, isLoading } = props;
 
   const dayMap = {
     0: 'Sunday',
@@ -59,19 +60,30 @@ const Slate = (props) => {
     }
   }
 
+  const variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
   return (
-    <Row>
-      <Col>
-        <Row className="mx-auto mt-3 mb-3">
-          <Col className="pl-0">
-            <h2>{slateText}</h2>
-          </Col>
-        </Row>
-        {games.map((game) => (
-          <Game game={game} slate={name} key={game.id} />
-        ))}
-      </Col>
-    </Row>
+    <motion.div
+      initial="hidden"
+      animate={isLoading ? 'hidden' : 'visible'}
+      variants={variants}
+    >
+      <Row>
+        <Col>
+          <Row className="mx-auto mt-3 mb-3">
+            <Col className="pl-0">
+              <h2>{slateText}</h2>
+            </Col>
+          </Row>
+          {games.map((game) => (
+            <Game game={game} slate={name} key={game.id} />
+          ))}
+        </Col>
+      </Row>
+    </motion.div>
   );
 };
 
