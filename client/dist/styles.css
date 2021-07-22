@@ -73,8 +73,7 @@ td, th {
 }
 
 .dropdown {
-  display: flex;
-  justify-content: flex-end;
+  width: fit-content;
 }
 
 #sort-btn {
