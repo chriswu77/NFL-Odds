@@ -178,40 +178,29 @@ const summarizeGames = (sortedGames) => {
       };
 
       gameObj.bookmakers.forEach((bookie) => {
-        bookie.markets.forEach((market) => {
-          if (market.key === 'h2h') {
-            market.outcomes.forEach((outcome) => {
-              if (outcome.name === gameObj.home_team) {
-                homeStats.moneyLines.push(outcome.price);
-              } else {
-                awayStats.moneyLines.push(outcome.price);
-              }
-            });
-          } else if (market.key === 'h2h_lay') {
-            market.outcomes.forEach((outcome) => {
-              if (outcome.name === gameObj.home_team && outcome.price < 50000) {
-                homeStats.moneyLines.pop();
-                homeStats.moneyLines.push(outcome.price);
-              } else if (
-                outcome.name === gameObj.away_team &&
-                outcome.price < 50000
-              ) {
-                awayStats.moneyLines.pop();
-                awayStats.moneyLines.push(outcome.price);
-              }
-            });
-          } else if (market.key === 'spreads') {
-            market.outcomes.forEach((outcome) => {
-              if (outcome.name === gameObj.home_team) {
-                homeStats.spreads.push(outcome.point);
-              } else {
-                awayStats.spreads.push(outcome.point);
-              }
-            });
-          } else if (market.key === 'totals') {
-            homeStats.totals.push(market.outcomes[0].point);
-          }
-        });
+        if (bookie.key !== 'betfair') {
+          bookie.markets.forEach((market) => {
+            if (market.key === 'h2h') {
+              market.outcomes.forEach((outcome) => {
+                if (outcome.name === gameObj.home_team) {
+                  homeStats.moneyLines.push(outcome.price);
+                } else {
+                  awayStats.moneyLines.push(outcome.price);
+                }
+              });
+            } else if (market.key === 'spreads') {
+              market.outcomes.forEach((outcome) => {
+                if (outcome.name === gameObj.home_team) {
+                  homeStats.spreads.push(outcome.point);
+                } else {
+                  awayStats.spreads.push(outcome.point);
+                }
+              });
+            } else if (market.key === 'totals') {
+              homeStats.totals.push(market.outcomes[0].point);
+            }
+          });
+        }
       });
 
       const homeMoneyStats = getStats(homeStats.moneyLines);
