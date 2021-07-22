@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Slate from './Slate';
 
 const Slates = (props) => {
-  const { slateData, sortGames, sortBy, setIsLoading } = props;
+  const { slateData, sortGames, sortBy, isLoading, setIsLoading } = props;
 
   const [thurs, setThurs] = useState([]);
   const [sat, setSat] = useState([]);
@@ -35,14 +35,22 @@ const Slates = (props) => {
 
   return (
     <Col>
-      {thurs.length > 0 && <Slate name="thurs" games={thurs} />}
-      {sat.length > 0 && <Slate name="sat" games={sat} />}
-      {sunMorning.length > 0 && <Slate name="sunMorning" games={sunMorning} />}
-      {sunAfternoon.length > 0 && (
-        <Slate name="sunAfternoon" games={sunAfternoon} />
+      {thurs.length > 0 && (
+        <Slate name="thurs" games={thurs} isLoading={isLoading} />
       )}
-      {sunEvening.length > 0 && <Slate name="sunEvening" games={sunEvening} />}
-      {primetime.length > 0 && <Slate name="primetime" games={primetime} />}
+      {sat.length > 0 && <Slate name="sat" games={sat} isLoading={isLoading} />}
+      {sunMorning.length > 0 && (
+        <Slate name="sunMorning" games={sunMorning} isLoading={isLoading} />
+      )}
+      {sunAfternoon.length > 0 && (
+        <Slate name="sunAfternoon" games={sunAfternoon} isLoading={isLoading} />
+      )}
+      {sunEvening.length > 0 && (
+        <Slate name="sunEvening" games={sunEvening} isLoading={isLoading} />
+      )}
+      {primetime.length > 0 && (
+        <Slate name="primetime" games={primetime} isLoading={isLoading} />
+      )}
     </Col>
   );
 };
