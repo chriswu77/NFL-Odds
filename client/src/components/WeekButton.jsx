@@ -19,7 +19,7 @@ const WeekButton = (props) => {
             className="mr-2"
           />
         )}
-        <span>WEEK {isNextWeek ? week - 1 : week + 1}</span>
+        <span>Week {isNextWeek ? week - 1 : week + 1}</span>
         {!isNextWeek && (
           <FontAwesomeIcon
             icon={faLongArrowAltRight}

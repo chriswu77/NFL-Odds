@@ -172,8 +172,8 @@ const App = () => {
     <>
       <Container fluid className="main-container">
         <Row className="mx-auto mb-5">
-          <Col className="pl-0">
-            <h1 className="display-6 ">NFL 2021 - WEEK {week} ODDS</h1>
+          <Col xs={9} className="pl-0">
+            <h1 className="display-6 ">NFL 2021 - Week {week} Odds</h1>
           </Col>
           <Col className="d-flex justify-content-end p-0">
             <RefreshButton
