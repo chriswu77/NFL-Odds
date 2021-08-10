@@ -26,7 +26,7 @@ const App = () => {
 
   const getCurrentWeek = async () => {
     try {
-      const res = await axios.get('/api/week');
+      const res = await axios.get('/api/weeks/current');
       setWeek(res.data);
     } catch (err) {
       console.log(err);
@@ -55,7 +55,7 @@ const App = () => {
     try {
       setIsLoading(true);
 
-      const res = await axios.get('/api/refresh');
+      const res = await axios.get('/api/games/refresh');
       setRequestsRemaining(res.data.remaining);
       setRequestsUsed(res.data.used);
 
