@@ -49,14 +49,19 @@ const Slate = (props) => {
   } else if (name === 'sunEvening') {
     slateText = `${dayMap[day]} 4pm - ${monthMap[month]} ${calendarDay}`;
   } else if (name === 'primetime') {
-    const game2Date = parseISO(games[1].commence_time);
-    const calendarDay2 = game2Date.getDate();
-    const month2 = game2Date.getMonth();
-
-    if (gameDate < game2Date) {
-      slateText = `Primetime - ${monthMap[month]} ${calendarDay} to ${monthMap[month2]} ${calendarDay2}`;
+    // if only 1 PT game cause of data refresh
+    if (games.length < 2) {
+      slateText = `Primetime - ${monthMap[month]} ${calendarDay}`;
     } else {
-      slateText = `Primetime - ${monthMap[month2]} ${calendarDay2} to ${monthMap[month]} ${calendarDay}`;
+      const game2Date = parseISO(games[1].commence_time);
+      const calendarDay2 = game2Date.getDate();
+      const month2 = game2Date.getMonth();
+
+      if (gameDate < game2Date) {
+        slateText = `Primetime - ${monthMap[month]} ${calendarDay} to ${monthMap[month2]} ${calendarDay2}`;
+      } else {
+        slateText = `Primetime - ${monthMap[month2]} ${calendarDay2} to ${monthMap[month]} ${calendarDay}`;
+      }
     }
   }
 
