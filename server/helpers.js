@@ -11,8 +11,7 @@ const refreshData = async () => {
   // remove all documents in Game collection first
   await Game.deleteMany({});
 
-  const response = await getOddsData();
-  const { data } = response;
+  const { data, headers } = await getOddsData();
 
   await Promise.all(
     data.map(async (gameObj) => {
@@ -22,8 +21,8 @@ const refreshData = async () => {
   );
 
   const requestInfo = {
-    remaining: response.headers['x-requests-remaining'],
-    used: response.headers['x-requests-used'],
+    remaining: headers['x-requests-remaining'],
+    used: headers['x-requests-used'],
   };
 
   return requestInfo;
